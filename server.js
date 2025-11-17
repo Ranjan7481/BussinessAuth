@@ -14,22 +14,12 @@ const authRoutes = require('./src/routes/authRoutes.js');
 const adminRoutes = require('./src/routes/adminRoutes.js');
 
 const app = express();
-// console.log("Mailer Config →", {
-//   host: process.env.EMAIL_HOST,
-//   port: process.env.EMAIL_PORT,
-//   user: process.env.EMAIL_USER,
-//   pass: process.env.EMAIL_PASS
-// });
 
-app.use(cors({
-    origin: "http://localhost:5173",
-    credentials: true
-}));
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
+  origin: process.env.CLIENT_URL || 'http://localhost:5173',
   credentials: true
 }));
 
