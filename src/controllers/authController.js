@@ -31,7 +31,15 @@ const signup = async (req, res, next) => {
     }
 
     const existing = await User.findOne({email:email});
-    if (existing) return res.status(409).json({ success: false, message: 'Email already registered.' });
+    // if (existing) return res.status(409).json({ success: false, message: 'Email already registered.' });
+    if (existing) {
+  if (!existing.isVerified) {
+    // Delete old unverified account
+    await User.deleteOne({ email });
+  } else {
+    return res.status(409).json({ success: false, message: 'Email already registered.' });
+  }
+}
 
     const hashed = await hashPassword(password);
     const { otp, otpHash } = createOtp();
