@@ -16,6 +16,7 @@
     "@google-ai/generativelanguage": "^3.5.0",
     "@google-cloud/storage": "^7.18.0",
     "bcryptjs": "^3.0.3",
+    "canvas": "^3.2.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
@@ -33,10 +34,9 @@
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "pdf-parse": "^1.1.1",
-    "pdfjs-dist": "^3.10.111",
+    "pdfjs-dist": "^5.4.449",
     "twilio": "^5.10.6",
-    "validator": "^13.15.23",
-    "xlsx": "^0.18.5"
+    "validator": "^13.15.23"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"
