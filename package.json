@@ -38,9 +38,5 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.11"
-  },
-  "overrides": {
-    "fetch-blob": "^4.0.0",
-    "node-domexception": "2.0.0"
   }
 }
