@@ -37,7 +37,6 @@ app.use(
 );
 
 // (optional but accha) – handle preflight explicitly
-app.options("*", cors())
 app.use(session({
   secret: process.env.SESSION_SECRET || 'keyboard cat',
   resave: false,
