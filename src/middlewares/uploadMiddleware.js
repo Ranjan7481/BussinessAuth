@@ -1,23 +1,32 @@
+// src/middlewares/upload.js
+
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const os = require("os");
 
-const uploadDir = path.join(__dirname, "../uploads");
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
+// Vercel + local dono ke liye safe directory (writable):
+// /tmp/uploads (Vercel) ya OS ka temp folder
+const uploadRoot = path.join(os.tmpdir(), "uploads");
+
+if (!fs.existsSync(uploadRoot)) {
+  fs.mkdirSync(uploadRoot, { recursive: true });
 }
 
+// Common storage config
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, uploadDir);
+    cb(null, uploadRoot); // e.g. /tmp/uploads
   },
   filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1E9);
+    const uniqueSuffix =
+      Date.now() + "-" + Math.round(Math.random() * 1e9);
     cb(null, uniqueSuffix + path.extname(file.originalname));
-  }
+  },
 });
 
-const fileFilter = (req, file, cb) => {
+// Sirf PDF allow for services
+const pdfFileFilter = (req, file, cb) => {
   if (file.mimetype === "application/pdf") {
     cb(null, true);
   } else {
@@ -25,10 +34,29 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-const upload = multer({
+// CSV ke liye common mimetypes allow karo
+const csvFileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === "text/csv" ||
+    file.mimetype === "application/vnd.ms-excel" ||
+    file.originalname.toLowerCase().endsWith(".csv")
+  ) {
+    cb(null, true);
+  } else {
+    cb(new Error("Only CSV files are allowed!"), false);
+  }
+};
+
+const uploadPdf = multer({
   storage,
-  fileFilter,
-  limits: { fileSize: 10 * 1024 * 1024 } // 10 MB
+  fileFilter: pdfFileFilter,
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
 });
 
-module.exports = upload;
+const uploadCsv = multer({
+  storage,
+  fileFilter: csvFileFilter,
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
+});
+
+module.exports = { uploadPdf, uploadCsv };

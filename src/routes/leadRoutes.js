@@ -1,11 +1,13 @@
-const express = require('express');
-const multer = require('multer');
-const { createLead } = require('../controllers/leadController');    
+// src/routes/leadRoutes.js
 
-const upload = multer({ dest: 'uploads/' });
+const express = require("express");
+const { createLead } = require("../controllers/leadController");
+const { authMiddleware } = require("../middlewares/authMiddleware");
+const { uploadCsv } = require("../middlewares/uploadMiddleware");
+
 const router = express.Router();
 
-// CSV upload ke liye
-router.post('/create', upload.single('csv'), createLead);
+// CSV upload ke liye (authenticated user ke liye)
+router.post("/create", authMiddleware, uploadCsv.single("csv"), createLead);
 
 module.exports = router;
