@@ -28,6 +28,7 @@ exports.parseCsv = (filePath) => {
             // Log for debugging
             console.warn(`Skipping lead due to invalid phone number: ${data.phone} for ${leadData.name}`);
         }
+      
       })
       .on('end', () => {
         resolve(results);
