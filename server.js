@@ -28,10 +28,16 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 
-app.use(cors({
-  origin: "*",
-}));
+app.use(
+  cors({
+    origin: "*", // ✅ allow all origins
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"], // ✅ allow JWT header
+  })
+);
 
+// (optional but accha) – handle preflight explicitly
+app.options("*", cors())
 app.use(session({
   secret: process.env.SESSION_SECRET || 'keyboard cat',
   resave: false,
